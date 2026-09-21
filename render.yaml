@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: guess-the-country-api
+    runtime: docker
+    plan: free
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # SQLite file lives on the free plan's ephemeral disk — it's recreated
+      # (migrate + seed) on every container boot, see backend/Dockerfile.
+      # To persist data across restarts, upgrade this service's plan and
+      # attach a Render Disk, then point this at a path on that disk.
+      - key: DATABASE_URL
+        value: file:./dev.db
+      # PORT is set automatically by Render — the app already reads it
+      # from process.env, so it's intentionally not listed here.
+
+  - type: web
+    name: guess-the-country
+    runtime: static
+    plan: free
+    buildCommand: npm ci && npm run build -w frontend
+    staticPublishPath: frontend/dist
+    envVars:
+      # Baked in at build time by Vite. If Render assigns the API service a
+      # different subdomain than expected (e.g. due to a name collision),
+      # update this to match and trigger a manual redeploy of this service.
+      - key: VITE_API_URL
+        value: https://guess-the-country-api.onrender.com

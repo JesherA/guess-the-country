@@ -1,0 +1,26 @@
+:root {
+  --text: #1a1a1a;
+  --bg: #ffffff;
+  --border-color: #d9d9d9;
+  --accent-color: #3b6ef6;
+  color-scheme: light dark;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e8e8e8;
+    --bg: #1a1b1e;
+    --border-color: #3a3b3f;
+  }
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100svh;
+}

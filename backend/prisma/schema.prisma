@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  games     Game[]
+}
+
+model Game {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  targetCountryIso String
+  startedAt        DateTime  @default(now())
+  completedAt      DateTime?
+  won              Boolean   @default(false)
+  guessCount       Int       @default(0)
+  guesses          Guess[]
+}
+
+model Guess {
+  id                String   @id @default(cuid())
+  gameId            String
+  game              Game     @relation(fields: [gameId], references: [id])
+  sequenceNumber    Int
+  guessedCountryIso String
+  distanceKm        Float
+  guessedAt         DateTime @default(now())
+}

@@ -1,0 +1,9 @@
+{
+  "name": "guess-the-country",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ]
+}

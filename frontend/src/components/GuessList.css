@@ -1,0 +1,33 @@
+.guess-list {
+  width: 100%;
+  max-width: 28rem;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.guess-list th,
+.guess-list td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.guess-list th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #777;
+}
+
+.guess-list__correct {
+  background: #e6f7ec;
+  font-weight: 600;
+}
+
+.guess-list__muted {
+  color: #999;
+}
+
+.guess-list__empty {
+  color: #888;
+  margin-top: 1rem;
+}

@@ -1,0 +1,139 @@
+.world-map {
+  width: 100%;
+  max-width: 48rem;
+  margin: 1.5rem 0;
+}
+
+.world-map__canvas {
+  position: relative;
+}
+
+.world-map__svg {
+  width: 100%;
+  height: auto;
+  touch-action: none;
+}
+
+.world-map__svg--globe {
+  cursor: grab;
+}
+
+.world-map__svg--globe:active {
+  cursor: grabbing;
+}
+
+.world-map__svg path {
+  transition: opacity 0.1s ease;
+}
+
+.world-map__svg path:hover {
+  opacity: 0.85;
+}
+
+.world-map__style-toggle {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1;
+  display: flex;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 0.35rem;
+  overflow: hidden;
+}
+
+.world-map__style-toggle button {
+  border: none;
+  background: var(--bg, white);
+  color: var(--text, inherit);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+}
+
+.world-map__style-toggle button + button {
+  border-left: 1px solid var(--border-color, #ccc);
+}
+
+.world-map__style-toggle button:hover {
+  background: var(--border-color, #eee);
+}
+
+.world-map__style-toggle button.is-active {
+  background: var(--text, #333);
+  color: var(--bg, white);
+}
+
+.world-map__zoom-controls {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.world-map__zoom-controls button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--bg, white);
+  color: var(--text, inherit);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.world-map__zoom-controls button:hover {
+  background: var(--border-color, #eee);
+}
+
+.world-map__zoom-controls button:last-child {
+  width: auto;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+}
+
+.world-map__tooltip {
+  min-height: 1.4rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary, #666);
+  text-align: center;
+}
+
+.world-map__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #666);
+}
+
+.world-map__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.world-map__legend-swatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 0.2rem;
+  display: inline-block;
+}
+
+.world-map__legend-item--gradient {
+  gap: 0.5rem;
+}
+
+.world-map__legend-gradient {
+  width: 8rem;
+  height: 0.6rem;
+  border-radius: 0.3rem;
+}

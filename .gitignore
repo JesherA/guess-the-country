@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+
+# backend
+backend/.env
+backend/dev.db
+backend/dev.db-journal
+
+# generated country reference data (see backend/scripts/build-country-data.ts)
+# — aliases.json is a hand-maintained input and stays tracked
+backend/data/countries.json
+backend/data/borders.geo.json
+
+# editors/OS
+.DS_Store
+*.log
