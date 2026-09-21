@@ -27,6 +27,11 @@ services:
     buildCommand: npm ci -w frontend --include-workspace-root && npm run build -w frontend
     staticPublishPath: frontend/dist
     envVars:
+      # Render otherwise runs its own `npm install` at the repo root before
+      # buildCommand, which pulls in the backend and trips over its
+      # `prisma generate` postinstall. buildCommand installs what's needed.
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
       # Baked in at build time by Vite. If Render assigns the API service a
       # different subdomain than expected (e.g. due to a name collision),
       # update this to match and trigger a manual redeploy of this service.
