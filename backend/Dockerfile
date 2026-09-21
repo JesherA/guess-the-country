@@ -21,6 +21,12 @@ COPY shared/package.json shared/package.json
 # invalidates on dependency or schema changes, not on every source edit.
 COPY backend/prisma backend/prisma
 COPY backend/prisma.config.ts backend/prisma.config.ts
+
+# prisma.config.ts resolves this eagerly, so it must be set even though
+# generating the client never connects to a database. Render overrides it
+# with the service's own value at runtime.
+ENV DATABASE_URL=file:./dev.db
+
 RUN npm ci
 
 COPY shared shared
