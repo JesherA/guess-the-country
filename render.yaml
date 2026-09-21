@@ -21,7 +21,10 @@ services:
   - type: web
     name: guess-the-country
     runtime: static
-    buildCommand: npm ci && npm run build -w frontend
+    # Scoped to the frontend workspace: a plain `npm ci` would also install
+    # the backend's dependencies (native better-sqlite3, Prisma) and run its
+    # `prisma generate` postinstall, which fails here with no DATABASE_URL.
+    buildCommand: npm ci -w frontend --include-workspace-root && npm run build -w frontend
     staticPublishPath: frontend/dist
     envVars:
       # Baked in at build time by Vite. If Render assigns the API service a
