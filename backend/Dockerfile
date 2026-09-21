@@ -16,6 +16,11 @@ COPY package.json package-lock.json ./
 COPY backend/package.json backend/package.json
 COPY frontend/package.json frontend/package.json
 COPY shared/package.json shared/package.json
+# backend's postinstall runs `prisma generate`, which needs the schema —
+# copied here (ahead of the rest of the source) so this layer only
+# invalidates on dependency or schema changes, not on every source edit.
+COPY backend/prisma backend/prisma
+COPY backend/prisma.config.ts backend/prisma.config.ts
 RUN npm ci
 
 COPY shared shared
