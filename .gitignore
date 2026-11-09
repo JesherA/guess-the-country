@@ -15,3 +15,7 @@ backend/data/borders.geo.json
 # editors/OS
 .DS_Store
 *.log
+
+# IDEs
+.vscode/
+
