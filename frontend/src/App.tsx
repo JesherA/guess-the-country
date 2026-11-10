@@ -9,12 +9,14 @@ import "./App.css";
 
 function App() {
   const { data: countries, isLoading: isLoadingCountries } = useCountries();
-  const { gameState, isLoadingGame, isStartingGame, newGame, submitGuess, isGuessing, guessError } = useGame();
+  const { gameState, isLoadingGame, isStartingGame, newGame, submitGuess, reveal, isRevealing, isGuessing, guessError } = useGame();
 
   const guessedIsos = useMemo(
     () => new Set(gameState?.guesses.map((g) => g.countryIso) ?? []),
     [gameState]
   );
+
+  const revealed = gameState?.revealed ?? false;
 
   if (isLoadingCountries || isLoadingGame || isStartingGame || !gameState) {
     return (
@@ -29,12 +31,13 @@ function App() {
       <GameHeader
         guessCount={gameState.guesses.length}
         won={gameState.won}
+        revealed={revealed}
         targetCountryIso={gameState.targetCountryIso}
         countries={countries ?? []}
         onNewGame={newGame}
       />
 
-      {!gameState.won && (
+      {!gameState.won && !revealed && (
         <GuessInput
           countries={countries ?? []}
           guessedIsos={guessedIsos}
@@ -47,6 +50,12 @@ function App() {
       <WorldMap guesses={gameState.guesses} />
 
       <GuessList guesses={gameState.guesses} countries={countries ?? []} />
+
+      {!gameState.won && !revealed && (
+        <button type="button" className="app__reveal" disabled={isRevealing} onClick={() => reveal()}>
+          Show answer
+        </button>
+      )}
     </main>
   );
 }
