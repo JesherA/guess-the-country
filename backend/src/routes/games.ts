@@ -4,7 +4,7 @@ import { prisma } from "../prisma.js";
 import { getDefaultUserId } from "../data/defaultUser.js";
 import { getCountryByIso, getBorderGeometry, getRandomCountryIso } from "../data/countryStore.js";
 import { borderDistanceKm } from "../geo/distance.js";
-import type { GameStateResponse, GuessResponse, StartGameResponse } from "@guess-the-country/shared";
+import type { GameStateResponse, GuessResponse, RevealResponse, StartGameResponse } from "@guess-the-country/shared";
 
 export const gamesRouter = Router();
 
@@ -73,6 +73,20 @@ gamesRouter.post("/:id/guesses", async (req, res) => {
   res.json(body);
 });
 
+gamesRouter.post("/:id/reveal", async (req, res) => {
+  const game = await prisma.game.findUnique({ where: { id: req.params.id } });
+  if (!game) {
+    res.status(404).json({ error: "Game not found" });
+    return;
+  }
+  if (!game.completedAt) {
+    await prisma.game.update({ where: { id: game.id }, data: { completedAt: new Date() } });
+  }
+
+  const body: RevealResponse = { targetCountryIso: game.targetCountryIso };
+  res.json(body);
+});
+
 gamesRouter.get("/:id", async (req, res) => {
   const game = await prisma.game.findUnique({
     where: { id: req.params.id },
@@ -86,13 +100,14 @@ gamesRouter.get("/:id", async (req, res) => {
   const body: GameStateResponse = {
     gameId: game.id,
     won: game.won,
+    revealed: !game.won && game.completedAt !== null,
     guesses: game.guesses.map((g) => ({
       countryIso: g.guessedCountryIso,
       distanceKm: g.distanceKm,
       isCorrect: g.guessedCountryIso === game.targetCountryIso,
       guessCount: g.sequenceNumber,
     })),
-    targetCountryIso: game.won ? game.targetCountryIso : undefined,
+    targetCountryIso: game.completedAt ? game.targetCountryIso : undefined,
   };
   res.json(body);
 });

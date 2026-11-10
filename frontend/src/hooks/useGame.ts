@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { GameStateResponse } from "@guess-the-country/shared";
-import { getGameState, startGame, submitGuess } from "../api/client";
+import { getGameState, revealAnswer, startGame, submitGuess } from "../api/client";
 
 const STORAGE_KEY = "guess-the-country:gameId";
 
@@ -40,6 +40,19 @@ export function useGame() {
     },
   });
 
+  const revealMutation = useMutation({
+    mutationFn: () => revealAnswer(gameId!),
+    onSuccess: ({ targetCountryIso }) => {
+      queryClient.setQueryData<GameStateResponse>(["game", gameId], (old) => ({
+        gameId: gameId!,
+        won: false,
+        revealed: true,
+        guesses: old?.guesses ?? [],
+        targetCountryIso,
+      }));
+    },
+  });
+
   // First-ever visit: no game yet, start one automatically.
   useEffect(() => {
     if (gameId === null && !startGameMutation.isPending) {
@@ -60,6 +73,8 @@ export function useGame() {
     isStartingGame: startGameMutation.isPending,
     newGame,
     submitGuess: guessMutation.mutate,
+    reveal: revealMutation.mutate,
+    isRevealing: revealMutation.isPending,
     isGuessing: guessMutation.isPending,
     guessError: guessMutation.error,
   };

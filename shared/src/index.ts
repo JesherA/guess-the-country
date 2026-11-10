@@ -27,9 +27,15 @@ export interface GuessResponse {
 export interface GameStateResponse {
   gameId: string;
   won: boolean;
+  /** True when the player gave up and asked for the answer */
+  revealed?: boolean;
   guesses: GuessResponse[];
   /** Only populated once the game has been won (or otherwise revealed) */
   targetCountryIso?: string;
+}
+
+export interface RevealResponse {
+  targetCountryIso: string;
 }
 
 export interface StatsResponse {

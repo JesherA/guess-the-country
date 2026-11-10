@@ -1,4 +1,4 @@
-import type { CountryMeta, GameStateResponse, GuessResponse, StartGameResponse } from "@guess-the-country/shared";
+import type { CountryMeta, GameStateResponse, GuessResponse, RevealResponse, StartGameResponse } from "@guess-the-country/shared";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
 
@@ -27,6 +27,10 @@ export function submitGuess(gameId: string, countryIso: string): Promise<GuessRe
     method: "POST",
     body: JSON.stringify({ countryIso }),
   });
+}
+
+export function revealAnswer(gameId: string): Promise<RevealResponse> {
+  return request(`/api/games/${gameId}/reveal`, { method: "POST" });
 }
 
 export function getGameState(gameId: string): Promise<GameStateResponse> {
